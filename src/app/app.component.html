@@ -1,8 +1,115 @@
+<div *ngIf="!connected">
 
-<span> {{ algosigned}} </span>
-<button (click)="checkAlgo()" > check algo signer </button>
+    <br>
 
-<br>
+    <button (click)="connectAlgo('TestNet')"> connect Test Net </button>
 
-<span> {{ algoConnected}} </span>
-<button (click)="connectAlgo()" > connect algo </button>
+    <br> 
+    <button (click)="connectAlgo('MainNet')"> connect Main Net </button>
+</div>
+
+
+<div *ngIf="connected">
+
+    <button (click)="connected=false"> logout </button>
+
+<h1> make a simple paiement </h1>
+    <form [formGroup]="paymentForm" (ngSubmit)="pay()">
+        <table >
+
+            <tr>
+                <td>
+
+                    from : </td>
+                <td>
+                    <div *ngFor="let account of accounts;let i = index" style="display: inline; padding: 4px; border: solid thin;">
+                        <button type="button" (click)="paymentForm.patchValue( {'from': account.address } ) " href="#">   
+                        Account:     {{ i }} </button>
+
+                    </div>
+                </td>
+                <td > <input type="text" formControlName="from" /></td>
+            </tr>
+
+            <tr>
+                <td> to </td>
+                <td>
+                    <div *ngFor="let account of accounts;let i = index" style="display: inline; padding: 4px; border: solid thin;">
+                        <button type="button" (click)="paymentForm.patchValue( {'to': account.address } ) " href="#">   
+                    Account:     {{ i }} </button>
+
+                    </div>
+                </td>
+                <td> <input type="text" formControlName="to" /></td>
+            </tr>
+
+            <tr>
+                <td> Amount </td>
+                
+                <td> <input type="text" formControlName="amount" /></td>
+            </tr>
+
+            <tr>
+                <td> <button type="submit">  pay  </button></td>
+
+            </tr>
+        </table>
+        <div>
+            <span>{{lastmessage}} </span>
+            <div *ngIf="txId">
+                <a  [href]="'https://goalseeker.purestake.io/algorand/' + ledger.toLowerCase() + '/transaction/' + txId"> {{txId}}</a>
+            </div>
+            
+        </div>
+    </form>
+
+
+</div>
+
+<div *ngIf="connected">
+<h1> Create New Asset  </h1>
+    <form [formGroup]="createAssetForm" (ngSubmit)="createAsset()">
+        <table >
+
+            <tr>
+                <td>
+
+                    from : </td>
+                <td>
+                    <div *ngFor="let account of accounts;let i = index" style="display: inline; padding: 4px; border: solid thin;">
+                        <button type="button" (click)="createAssetForm.patchValue( {'from': account.address } ) " href="#">   
+                        Account:     {{ i }} </button>
+
+                    </div>
+                </td>
+                <td > <input type="text" formControlName="from" /></td>
+            </tr>
+
+            <tr>
+                <td> name </td>
+                
+                <td> <input type="text" formControlName="name" /></td>
+            </tr>
+
+            <tr>
+                <td> Count </td>
+                
+                <td> <input type="text" formControlName="count" /></td>
+            </tr>
+
+            <tr>
+                <td> <button type="submit">  Create new asset  </button></td>
+
+            </tr>
+        </table>
+        <div>
+            <span>{{lastmessage}} </span>
+            <div *ngIf="txId">
+                <a  [href]="'https://goalseeker.purestake.io/algorand/' + ledger.toLowerCase() + '/transaction/' + txId"> {{txId}}</a>
+            </div>
+            
+        </div>
+    </form>
+
+
+</div>
